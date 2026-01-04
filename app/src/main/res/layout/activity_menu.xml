@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#222222"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OD Technologies"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="crazy banana car game"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:layout_marginBottom="40dp" />
+
+    <Button
+        android:id="@+id/btnStartFast"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Start Game (Fast)"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnStartSlow"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Start Game (Slow)"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnStartSensor"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Start Game (Sensors)"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/btnHighScores"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="High Scores"
+        android:backgroundTint="#4CAF50"/>
+
+</LinearLayout>

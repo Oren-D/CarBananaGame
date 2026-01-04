@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/road"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/gameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/scoreLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00000 m"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:background="@android:color/transparent"
+                android:textColor="#FFFFFF"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                <ImageView android:id="@+id/life1" android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/heart" />
+                <ImageView android:id="@+id/life2" android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/heart" />
+                <ImageView android:id="@+id/life3" android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/heart" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="20dp" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/rock00" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock01" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock02" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock03" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock04" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/rock10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock11" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock12" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock13" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock14" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/rock20" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock21" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock22" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock23" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock24" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/rock30" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock31" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock32" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock33" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock34" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+            <ImageView android:id="@+id/rock40" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock41" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock42" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock43" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+            <ImageView android:id="@+id/rock44" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/bannana" android:visibility="invisible"/>
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="20dp" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="100dp">
+            <ImageView android:id="@+id/car0" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/car" android:visibility="invisible"/>
+            <ImageView android:id="@+id/car1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/car" android:visibility="invisible"/>
+            <ImageView android:id="@+id/car2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/car" android:visibility="visible"/>
+            <ImageView android:id="@+id/car3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/car" android:visibility="invisible"/>
+            <ImageView android:id="@+id/car4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:src="@drawable/car" android:visibility="invisible"/>
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="20dp" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/btnLeft"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="80dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/lefth" />
+            <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+            <ImageButton
+                android:id="@+id/btnRight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="80dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/right" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
