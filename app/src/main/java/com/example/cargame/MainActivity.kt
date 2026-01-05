@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, GameManager.GameL
 
     private lateinit var viewsArray: Array<Array<ImageView>>
     private lateinit var cars: Array<ImageView>
+    private var crashPlayer: MediaPlayer? = null
 
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var runnable = object : Runnable {
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener, GameManager.GameL
         setContentView(binding.root)
 
         NotifManager.init(this)
+
+        crashPlayer = MediaPlayer.create(this, R.raw.crash)
 
         val isSlow = intent.getBooleanExtra("SLOW_MODE", false)
         isSensorMode = intent.getBooleanExtra("SENSOR_MODE", false)
@@ -114,6 +117,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener, GameManager.GameL
     override fun onStop() {
         super.onStop()
         stopTimer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        crashPlayer?.release()
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -190,8 +198,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, GameManager.GameL
         if (lives < 3 && isGameRunning) {
             NotifManager.getInstance().toast("Noob!")
             NotifManager.getInstance().vibrate()
-            val mediaPlayer = MediaPlayer.create(this, R.raw.crash)
-            mediaPlayer.start()
+            crashPlayer?.start()
         }
     }
 
