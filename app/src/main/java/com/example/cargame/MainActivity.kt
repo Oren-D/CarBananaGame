@@ -14,10 +14,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cargame.databinding.ActivityMainBinding
-import kotlin.math.abs
-import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity(), SensorEventListener, GameManager.GameListener {
 
     companion object {
         const val GAME_SCORE_KEY = "GAME_SCORE_KEY"
@@ -25,22 +23,24 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityMainBinding
 
-    var DELAY: Long = 700
-    var counter: Int = 0
-    var score: Int = 0
-    var lives: Int = 3
-    var lane: Int = 2
-    var isGameRunning: Boolean = false
+    private lateinit var gameManager: GameManager
+    private var isGameRunning: Boolean = false
 
     private var isSensorMode: Boolean = false
     private lateinit var sensorManager: SensorManager
     private var accSensor: Sensor? = null
     private var lastSensorMoveTime: Long = 0
 
-    val lMatrix = Array(5) { IntArray(5) { 0 } }
-
     private lateinit var viewsArray: Array<Array<ImageView>>
     private lateinit var cars: Array<ImageView>
+
+    private val handler: Handler = Handler(Looper.getMainLooper())
+    private var runnable = object : Runnable {
+        override fun run() {
+            handler.postDelayed(this, gameManager.delay)
+            gameManager.timerTick()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +52,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val isSlow = intent.getBooleanExtra("SLOW_MODE", false)
         isSensorMode = intent.getBooleanExtra("SENSOR_MODE", false)
 
-        if (isSlow) {
-            DELAY = 1000
-        } else {
-            DELAY = 500
-        }
+        gameManager = GameManager()
+        gameManager.setGameListener(this)
+        gameManager.delay = if (isSlow) 1000 else 500
 
         initViews()
         initSensors()
 
-        binding.btnLeft.setOnClickListener { moveCar(-1) }
-        binding.btnRight.setOnClickListener { moveCar(1) }
+        binding.btnLeft.setOnClickListener { gameManager.moveCar(-1) }
+        binding.btnRight.setOnClickListener { gameManager.moveCar(1) }
 
         if (isSensorMode) {
             binding.btnLeft.visibility = View.INVISIBLE
@@ -126,144 +124,42 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         if (System.currentTimeMillis() - lastSensorMoveTime > 300) {
             if (x > 3.0) {
-                moveCar(-1)
+                gameManager.moveCar(-1)
                 lastSensorMoveTime = System.currentTimeMillis()
             } else if (x < -3.0) {
-                moveCar(1)
+                gameManager.moveCar(1)
                 lastSensorMoveTime = System.currentTimeMillis()
             }
         }
 
         if (y < -2.0) {
-            DELAY = 300
+            gameManager.delay = 300
         } else if (y > 4.0) {
-            DELAY = 900
+            gameManager.delay = 900
         } else {
             val isSlow = intent.getBooleanExtra("SLOW_MODE", false)
-            DELAY = if (isSlow) 1000 else 500
+            gameManager.delay = if (isSlow) 1000 else 500
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
-    val handler: Handler = Handler(Looper.getMainLooper())
-
-    var runnable = object : Runnable {
-        override fun run() {
-            handler.postDelayed(this, DELAY)
-            timerTask()
-        }
-    }
-
-    fun startTimer() {
+    private fun startTimer() {
         stopTimer()
         handler.post(runnable)
     }
 
-    fun stopTimer() {
+    private fun stopTimer() {
         handler.removeCallbacks(runnable)
     }
 
     private fun startGame() {
         isGameRunning = true
-        resetGameData()
+        gameManager.resetGame()
         startTimer()
     }
 
-    private fun resetGameData() {
-        lives = 3
-        counter = 0
-        score = 0
-        lane = 2
-
-        for (i in 0..4) {
-            for (j in 0..4) lMatrix[i][j] = 0
-        }
-
-        updateScoreUI()
-        updateLivesUI()
-        updateGridUI()
-
-        for (c in cars) c.visibility = View.INVISIBLE
-        cars[lane].visibility = View.VISIBLE
-    }
-
-    fun timerTask() {
-        for (i in 4 downTo 1) {
-            for (j in 0..4) {
-                lMatrix[i][j] = lMatrix[i - 1][j]
-            }
-        }
-
-        for (j in 0..4) lMatrix[0][j] = 0
-
-        if (counter % 2 == 0) {
-            val lane = Random.nextInt(5)
-            val isCoin = Random.nextInt(100) < 30
-            if (isCoin) {
-                lMatrix[0][lane] = 2
-            } else {
-                lMatrix[0][lane] = 1
-            }
-        }
-        counter++
-
-        score += 10
-
-        updateScoreUI()
-        updateGridUI()
-        checkCollision()
-    }
-
-    private fun moveCar(direction: Int) {
-        if (!isGameRunning) return
-
-        cars[lane].visibility = View.INVISIBLE
-        lane += direction
-
-        if (lane < 0) lane = 0
-        if (lane > 4) lane = 4
-
-        cars[lane].visibility = View.VISIBLE
-        checkCollision()
-    }
-
-    private fun checkCollision() {
-        val item = lMatrix[4][lane]
-
-        if (item == 1) {
-            lMatrix[4][lane] = 0
-            lives--
-            updateLivesUI()
-            NotifManager.getInstance().toast("Noob!")
-            NotifManager.getInstance().vibrate()
-
-            val mediaPlayer = MediaPlayer.create(this, R.raw.crash)
-            mediaPlayer.start()
-
-            if (lives <= 0) handleGameOver()
-
-        } else if (item == 2) {
-            lMatrix[4][lane] = 0
-            score += 100
-            NotifManager.getInstance().toast("Bing!")
-            updateScoreUI()
-        }
-    }
-
-    private fun handleGameOver() {
-        stopTimer()
-        NotifManager.getInstance().toast("You Sucked")
-
-        handler.postDelayed({
-            val intent = Intent(this, ScoreActivity::class.java)
-            intent.putExtra(GAME_SCORE_KEY, score)
-            startActivity(intent)
-            finish()
-        }, 1500)
-    }
-
-    private fun updateGridUI() {
+    private fun updateGridUI(lMatrix: Array<IntArray>) {
         for (i in 0..4) {
             for (j in 0..4) {
                 val value = lMatrix[i][j]
@@ -282,13 +178,47 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    private fun updateScoreUI() {
+    override fun onScoreUpdate(score: Int) {
         binding.scoreLbl.text = String.format("%05d m", score)
     }
 
-    private fun updateLivesUI() {
+    override fun onLivesUpdate(lives: Int) {
         binding.life1.visibility = if (lives >= 1) View.VISIBLE else View.INVISIBLE
         binding.life2.visibility = if (lives >= 2) View.VISIBLE else View.INVISIBLE
         binding.life3.visibility = if (lives >= 3) View.VISIBLE else View.INVISIBLE
+
+        if (lives < 3 && isGameRunning) {
+            NotifManager.getInstance().toast("Noob!")
+            NotifManager.getInstance().vibrate()
+            val mediaPlayer = MediaPlayer.create(this, R.raw.crash)
+            mediaPlayer.start()
+        }
+    }
+
+    override fun onGridUpdate(grid: Array<IntArray>) {
+        updateGridUI(grid)
+    }
+
+    override fun onGameOver(score: Int) {
+        isGameRunning = false
+        stopTimer()
+        NotifManager.getInstance().toast("You Sucked")
+
+        handler.postDelayed({
+            val intent = Intent(this, ScoreActivity::class.java)
+            intent.putExtra(GAME_SCORE_KEY, score)
+            startActivity(intent)
+            finish()
+        }, 1500)
+    }
+
+    override fun onLaneChange(newLane: Int) {
+        for (i in cars.indices) {
+            cars[i].visibility = if (i == newLane) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    override fun onCoinCollected() {
+        NotifManager.getInstance().toast("100 points!")
     }
 }
